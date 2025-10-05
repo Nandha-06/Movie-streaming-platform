@@ -1,0 +1,350 @@
+.poster{
+    margin-bottom: 1rem; /* Space below hero banner */
+}
+
+.posterImage{
+    height: 600px;
+}
+
+.posterImage > img {
+    margin: auto;
+    display: block;
+    width: 100%;
+}
+
+.posterImage__overlay {
+    position: absolute;
+    padding: 5rem;
+    bottom: 0px;
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: flex-end;
+    align-items: flex-start;
+    background-image: linear-gradient(rgb(0,0,0,0), rgb(0,0,0,1));
+    opacity: 1;
+    transition: opacity .3s;
+}   
+
+.posterImage__overlay:hover {
+    opacity: 1;
+}
+
+.posterImage__title {
+    font-weight: 900;
+    font-size: 4rem;
+    margin-bottom: 0.4rem;
+    text-align: left;
+}
+
+.posterImage__runtime {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.posterImage__rating {
+    margin-left: 3rem;
+}
+
+.posterImage__description {
+     font-style: italic;
+     font-size: 1rem;
+     margin-bottom: 0.25rem;
+     display: flex;
+     text-align: left;
+     width: 50%;
+ }
+
+.error-container {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: center;
+     height: 400px;
+     color: white;
+}
+
+.error-container h2 {
+     margin-bottom: 1rem;
+     color: #ff6b6b;
+}
+
+.error-container button {
+     padding: 0.5rem 1rem;
+     background-color: #4ecdc4;
+     color: white;
+     border: none;
+     border-radius: 4px;
+     cursor: pointer;
+     font-size: 1rem;
+}
+
+.error-container button:hover {
+      background-color: #45b7aa;
+ }
+
+/* Now Playing Section */
+.now-playing-section {
+      padding: 0.5rem 2rem;
+      margin-top: 0.25rem;
+}
+
+.section-header {
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     margin-bottom: 0.25rem;
+     padding-bottom: 0;
+}
+
+.section-header h2 {
+     color: white;
+     font-size: 1.5rem;
+     font-weight: 600;
+     margin: 0;
+}
+
+.view-all-link {
+     color: white;
+     text-decoration: none;
+     font-size: 1.1rem;
+     font-weight: 500;
+     display: flex;
+     align-items: center;
+     gap: 0.5rem;
+     transition: color 0.3s ease;
+}
+
+.view-all-link:hover {
+     color: #ccc;
+}
+
+.view-all-link i {
+     font-size: 0.9rem;
+}
+
+/* Horizontal Scroll Container */
+.horizontal-scroll-container {
+      display: flex;
+      align-items: center;
+      position: relative;
+      width: 100%;
+      margin: -0.25rem 0;
+}
+
+.horizontal-scroll-container:hover .scroll-btn {
+      opacity: 1;
+}
+
+.scroll-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(78, 205, 196, 0.8);
+      color: white;
+      border: none;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      z-index: 10;
+      transition: opacity 0.3s ease, background-color 0.3s ease;
+      opacity: 0;
+}
+
+.scroll-btn:hover {
+      background-color: rgba(78, 205, 196, 1);
+}
+
+.scroll-btn-left {
+      left: -25px;
+}
+
+.scroll-btn-right {
+      right: -25px;
+}
+
+.horizontal-scroll-content {
+      display: flex;
+      gap: 0.5rem;  /* Reduced gap between cards */
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      padding: 0.25rem 0;
+      align-items: center;
+      width: 100%;
+      height: 350px;
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.horizontal-scroll-content::-webkit-scrollbar {
+      display: none; /* WebKit */
+}
+
+.now-playing-card {
+      flex: 0 0 auto;
+      width: 200px;
+      background-color: #222;
+      border-radius: 8px;
+      overflow: hidden;
+      text-decoration: none;
+      color: white;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      scroll-snap-align: start;
+      will-change: transform;
+      transform: translateZ(0);
+      backface-visibility: hidden;
+}
+
+.now-playing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+}
+
+.now-playing-card:hover {
+     transform: translateY(-5px);
+     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.now-playing-card img {
+     width: 100%;
+     height: 250px;
+     object-fit: cover;
+     transition: opacity 0.3s ease;
+}
+
+.now-playing-card:hover img {
+     opacity: 0.9;
+}
+
+.movie-info {
+     padding: 1rem;
+     flex-grow: 1;
+     display: flex;
+     flex-direction: column;
+}
+
+.movie-info h3 {
+     font-size: 1rem;
+     font-weight: 600;
+     margin-bottom: 0.5rem;
+     line-height: 1.3;
+     color: white;
+}
+
+.release-date {
+     color: #ccc;
+     font-size: 0.9rem;
+     margin-bottom: 0.5rem;
+}
+
+.rating {
+     display: flex;
+     align-items: center;
+     gap: 0.3rem;
+     margin-top: auto;
+     color: #ffd700;
+     font-size: 0.9rem;
+     font-weight: 500;
+}
+
+/* Custom carousel arrows */
+.carousel-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(78, 205, 196, 0.8);
+      color: white;
+      border: none;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-weight: bold;
+      z-index: 2;
+      transition: opacity 0.3s ease, background-color 0.3s ease;
+      opacity: 0;
+}
+
+.poster:hover .carousel-arrow {
+      opacity: 1;
+}
+
+.carousel-arrow:hover {
+      background-color: rgba(78, 205, 196, 1);
+}
+
+.carousel-arrow-left {
+      left: 15px;
+}
+
+.carousel-arrow-right {
+      right: 15px;
+}
+
+/* Responsive design for Now Playing section */
+@media (max-width: 768px) {
+     .now-playing-section {
+         padding: 1rem 1rem;
+     }
+
+     .section-header {
+         flex-direction: column;
+         align-items: flex-start;
+         gap: 1rem;
+     }
+
+     .section-header h2 {
+         font-size: 1.8rem;
+     }
+
+     .horizontal-scroll-content {
+         gap: 0.5rem;
+     }
+
+     .now-playing-card {
+         width: 150px;
+     }
+
+     .scroll-btn {
+         width: 40px;
+         height: 40px;
+         font-size: 1rem;
+     }
+
+     .scroll-btn-left {
+         left: -20px;
+     }
+
+     .scroll-btn-right {
+         right: -20px;
+     }
+
+     .now-playing-grid {
+         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+         gap: 1rem;
+     }
+
+     .now-playing-card img {
+         height: 200px;
+     }
+
+     .movie-info {
+         padding: 0.8rem;
+     }
+
+     .movie-info h3 {
+         font-size: 0.9rem;
+     }
+}

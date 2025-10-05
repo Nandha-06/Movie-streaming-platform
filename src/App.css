@@ -1,0 +1,45 @@
+.App {
+   background-color: black;
+   color: white;
+   font-family: sans-serif;
+ }
+
+.error-page {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   height: 60vh;
+   text-align: center;
+   padding: 2rem;
+}
+
+.error-page h1 {
+   color: #ff6b6b;
+   margin-bottom: 1rem;
+   font-size: 3rem;
+}
+
+.error-page p {
+   font-size: 1.2rem;
+   color: #ccc;
+}
+
+.page-loader {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   height: 60vh;
+   color: white;
+}
+
+.page-loader .loading-spinner {
+   font-size: 1.2rem;
+   animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+   0% { opacity: 0.5; }
+   50% { opacity: 1; }
+   100% { opacity: 0.5; }
+}
