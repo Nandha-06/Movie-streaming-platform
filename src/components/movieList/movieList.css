@@ -1,18 +1,18 @@
 .movie__list {
-    padding: 0 3rem 3rem 3rem;
+    padding: 2rem 3rem 3rem 3rem;
 }
 
 .list__title {
  font-size: 2rem;
- font-weight: 600;
- margin: 2.5rem;
+ font-weight: 700;
+ margin: 2rem 2.5rem;
  color: #4ecdc4;
- }
+}
 
 .list__cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, 200px);
-    gap: 0;
+    grid-template-columns: repeat(auto-fit, 220px);
+    gap: 1.5rem;
     justify-content: center;
 }
 

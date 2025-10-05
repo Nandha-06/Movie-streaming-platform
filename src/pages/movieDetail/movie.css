@@ -7,25 +7,28 @@
 }
 
 .movie__intro {
-    width: 80%;
+    width: 100%;
     position: relative;
 }
 
 .movie__backdrop {
     width: 100%;
-    height: 500px;
-    object-fit:cover;
-    object-position: 0 35%;
+    height: 70vh;
+    min-height: 600px;
+    object-fit: cover;
+    object-position: center 35%;
 }
 
 /* Trailer functionality removed - only backdrop image remains */
 
 .movie__detail {
     align-items: center;
-    width: 75%;
+    width: 85%;
+    max-width: 1400px;
     display: flex;
     position: relative;
-    bottom: 225px;
+    bottom: 250px;
+    margin: 0 auto;
 }
 
 .movie__detailLeft {
@@ -33,27 +36,30 @@
 }
 
 .movie__poster {
-    width:300px;
-    border-radius: 10px;
-    box-shadow: rgba(0, 0, 0, 0.86) 0px 22px 40px 6px;
+    width: 320px;
+    border-radius: 12px;
+    box-shadow: rgba(0, 0, 0, 0.9) 0px 30px 60px 10px;
+    transition: transform 0.3s ease;
 }
 
 .movie__detailRight {
     color: white;
     display: flex;
     flex-direction: column;
-    height: 450px;
-    justify-content:space-between ;
+    min-height: 480px;
+    justify-content: space-between;
 }
 
 .movie__detailRightTop > div{
-    text-shadow: 0px 0px 5px #000000;
-    margin-bottom: .5rem;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9);
+    margin-bottom: 0.8rem;
 }
 
 .movie__name {
-    font-weight: 600;
-    font-size: 3rem;
+    font-weight: 700;
+    font-size: 3.5rem;
+    line-height: 1.1;
+    letter-spacing: -1px;
 }
 
 .movie__voteCount {
@@ -91,14 +97,18 @@
 
 .movie__links {
     position: relative;
-    bottom: 120px;
+    bottom: 150px;
     display: flex;
     justify-content: space-between;
-    width: 75%;
+    width: 85%;
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
 .movie__heading {
-    font-size: 2.2rem;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: white;
 }
 
 .movie__Button {
@@ -128,10 +138,13 @@
 
 .movie__production {
     width: 85%;
+    max-width: 1400px;
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    margin-bottom: 4rem;
+    margin: 0 auto 4rem auto;
+    gap: 2rem;
+    flex-wrap: wrap;
 }
 
 
