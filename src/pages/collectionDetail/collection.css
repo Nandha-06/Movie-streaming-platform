@@ -1,0 +1,140 @@
+.collection-page {
+    min-height: 100vh;
+    background: #0a0a0a;
+}
+
+.collection-header {
+    position: relative;
+    height: 600px;
+    background-size: cover;
+    background-position: center top;
+    background-attachment: fixed;
+}
+
+.collection-header-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(10, 10, 10, 0.3) 0%, rgba(10, 10, 10, 0.6) 50%, rgba(10, 10, 10, 0.95) 85%, rgba(10, 10, 10, 1) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.collection-header-content {
+    max-width: 1200px;
+    padding: 0 40px;
+    text-align: center;
+    color: #fff;
+}
+
+.collection-header-content h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.collection-overview {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #ccc;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.collection-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px 40px 60px;
+    margin-top: -150px;
+    position: relative;
+    z-index: 2;
+}
+
+.collection-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 25px;
+}
+
+.collection-movie-card {
+    text-decoration: none;
+    transition: transform 0.3s ease;
+}
+
+.collection-movie-card:hover {
+    transform: scale(1.05);
+}
+
+.collection-movie-card img {
+    width: 200px;
+    height: 300px;
+    display: block;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    object-fit: cover;
+    transition: opacity 0.3s ease;
+}
+
+.collection-movie-card:hover img {
+    opacity: 0.8;
+}
+
+.collection-movie-info {
+    text-align: left;
+}
+
+.collection-movie-info h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    margin: 0 0 5px 0;
+}
+
+.movie-year {
+    font-size: 14px;
+    color: #999;
+    margin: 0;
+}
+
+.movie-overview {
+    display: none;
+}
+
+.collection-loading,
+.collection-error {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
+
+.loading-spinner {
+    font-size: 24px;
+}
+
+@media (max-width: 768px) {
+    .collection-header {
+        height: 400px;
+        background-attachment: scroll;
+    }
+
+    .collection-header-content h1 {
+        font-size: 32px;
+    }
+
+    .collection-overview {
+        font-size: 16px;
+    }
+
+    .collection-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 15px;
+    }
+
+    .collection-content {
+        padding: 40px 20px;
+    }
+}

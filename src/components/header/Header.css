@@ -1,16 +1,19 @@
 .header {
-    background-color: #0f0f0f;
     margin: 0;
-    padding: 1rem 2rem;
+    padding: 0;
+    height: 64px;
     align-items: center;
     display: flex;
     justify-content: space-between;
     gap: 2rem;
     flex-wrap: wrap;
-    border-bottom: 1px solid #333;
-    position: sticky;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.7), rgba(0,0,0,0));
+    backdrop-filter: blur(5px);
+    position: fixed;
     top: 0;
-    z-index: 100;
+    left: 0;
+    right: 0;
+    z-index: 50;
 }
 
 .headerLeft, .headerCenter, .headerRight {
@@ -40,6 +43,11 @@
     gap: 0.2rem;
     font-size: 1.8rem;
     font-weight: bold;
+    padding-left: 16px;
+}
+
+.logo svg {
+    height: 3rem;
 }
 
 .logo-screen {
@@ -58,17 +66,23 @@
 }
 
 .nav-link {
+    background: none;
     color: white;
     text-decoration: none;
     font-size: 1rem;
     font-weight: 500;
-    padding: 0.5rem 0;
-    transition: color 0.3s ease;
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
     white-space: nowrap;
 }
 
 .nav-link:hover {
-    color: #4ecdc4;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.nav-link:active {
+    background: rgba(255, 255, 255, 0.2);
 }
 
 /* Header Icons */
@@ -92,12 +106,15 @@
 }
 
 .notification-btn:hover {
-    background-color: rgba(78, 205, 196, 0.1);
-    color: #4ecdc4;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.notification-btn:active {
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 .signup-btn {
-    background-color: #ff6b35;
+    background: none;
     color: white;
     text-decoration: none;
     font-size: 1rem;
@@ -109,8 +126,7 @@
 }
 
 .signup-btn:hover {
-    background-color: #e55a2b;
-    transform: translateY(-2px);
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .headerCenter {
@@ -158,6 +174,10 @@
           font-size: 1.1rem;
       }
 
+      .logo svg {
+          height: 1.5rem;
+      }
+
       .headerCenter {
           order: 3;
           width: 100%;
@@ -181,4 +201,3 @@
           padding: 0.4rem 0.8rem;
       }
 }
-

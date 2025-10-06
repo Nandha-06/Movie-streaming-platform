@@ -1,0 +1,194 @@
+.collections-page {
+    min-height: 100vh;
+    padding: 80px 20px 40px;
+    background: linear-gradient(to bottom, #0a0a0a 0%, #1a1a1a 100%);
+}
+
+.collections-header {
+    max-width: 1400px;
+    margin: 0 auto 40px;
+    text-align: center;
+}
+
+.collections-header h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.collections-header p {
+    font-size: 1.2rem;
+    color: #999;
+    margin: 0;
+}
+
+.collections-grid {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.collection-card {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+    background: #1a1a1a;
+}
+
+.collection-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.6), 0px 10px 20px rgba(0, 0, 0, 0.4);
+}
+
+.collection-card-image {
+    position: relative;
+    width: 100%;
+    height: 330px;
+    overflow: hidden;
+}
+
+.collection-card-image img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.collection-card:hover .collection-card-image img {
+    transform: scale(1.05);
+}
+
+.collection-card-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.7) 50%, transparent 100%);
+    padding: 20px 15px 15px;
+    transition: background 0.3s ease;
+}
+
+.collection-card:hover .collection-card-overlay {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.98) 0%, rgba(0, 0, 0, 0.85) 60%, transparent 100%);
+}
+
+.collection-info h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 6px 0;
+    line-height: 1.3;
+}
+
+.collection-count {
+    font-size: 0.85rem;
+    color: #999;
+    margin: 0;
+    opacity: 0.9;
+}
+
+.collections-loading,
+.collections-error {
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
+
+.loading-spinner {
+    font-size: 1.5rem;
+    color: #667eea;
+}
+
+.collections-error h2 {
+    color: #ff6b6b;
+    margin-bottom: 20px;
+}
+
+.collections-error button {
+    padding: 12px 30px;
+    font-size: 1rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.collections-error button:hover {
+    transform: scale(1.05);
+}
+
+.loading-more {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    color: #667eea;
+}
+
+.loading-more .loading-spinner {
+    font-size: 1.2rem;
+}
+
+.end-of-results {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    color: #999;
+    text-align: center;
+}
+
+.end-of-results p {
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .collections-page {
+        padding: 60px 10px 20px;
+    }
+
+    .collections-header h1 {
+        font-size: 2rem;
+    }
+
+    .collections-header p {
+        font-size: 1rem;
+    }
+
+    .collections-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 15px;
+        padding: 10px;
+    }
+
+    .collection-card-image {
+        height: 240px;
+    }
+
+    .collection-info h3 {
+        font-size: 1rem;
+    }
+
+    .collection-count {
+        font-size: 0.85rem;
+    }
+}

@@ -562,3 +562,194 @@ export const fetchMovieTrailers = async (id, isTV = false) => {
         throw error;
     }
 };
+
+// Fetch movie logos
+export const fetchMovieLogos = async (id) => {
+    const endpoint = `/movie/${id}/images`;
+    const cacheKey = getCacheKey(endpoint);
+
+    // Check cache first
+    const cachedData = getCachedData(cacheKey);
+    if (cachedData) {
+        return cachedData;
+    }
+
+    try {
+        const response = await fetch(
+            `${BASE_URL}${endpoint}?api_key=${API_KEY}&language=en-US`
+        );
+
+        if (!response.ok) {
+            throw new Error(`API error: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        // Get logos from the response - TMDB provides logos in the logos array
+        const logos = data.logos || [];
+
+        // Filter for English language logos and prefer PNG/SVG formats
+        const englishLogos = logos.filter(logo =>
+            logo.iso_639_1 === 'en' &&
+            (logo.file_path.endsWith('.png') || logo.file_path.endsWith('.svg'))
+        );
+
+        // If no English logos found, get any available logo
+        const fallbackLogos = logos.filter(logo =>
+            logo.file_path.endsWith('.png') || logo.file_path.endsWith('.svg')
+        );
+
+        const finalLogos = englishLogos.length > 0 ? englishLogos : fallbackLogos;
+
+        // Cache the response
+        setCachedData(cacheKey, finalLogos);
+        return finalLogos;
+    } catch (error) {
+        console.error('Error fetching movie logos:', error);
+        throw error;
+    }
+};
+
+// Fetch similar movies or TV shows
+export const fetchSimilarMedia = async (id, isTV = false) => {
+    // Use /recommendations for both movies and TV shows
+    const endpoint = isTV ? `/tv/${id}/recommendations` : `/movie/${id}/recommendations`;
+    const cacheKey = getCacheKey(endpoint);
+    const fullUrl = `${BASE_URL}${endpoint}?api_key=${API_KEY}&language=en-US&page=1`;
+    
+    console.log(`Fetching ${isTV ? 'TV show' : 'movie'} recommendations from: ${fullUrl}`);
+
+    // Check cache first
+    const cachedData = getCachedData(cacheKey);
+    if (cachedData) {
+        console.log('Returning cached recommendations data');
+        return cachedData;
+    }
+
+    try {
+        const response = await fetch(fullUrl);
+
+        if (!response.ok) {
+            throw new Error(`API error: ${response.status} - ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        console.log(`${isTV ? 'TV show' : 'Movie'} recommendations API response for ${isTV ? 'TV' : 'movie'} ${id}:`, data);
+
+        // Cache the response
+        setCachedData(cacheKey, data);
+        return data;
+    } catch (error) {
+        console.error(`Error fetching ${isTV ? 'TV show' : 'movie'} recommendations for ID ${id}:`, error);
+        throw error;
+    }
+};
+
+// Fetch cast and crew credits
+export const fetchCredits = async (id, isTV = false) => {
+    const endpoint = isTV ? `/tv/${id}/credits` : `/movie/${id}/credits`;
+    const cacheKey = getCacheKey(endpoint);
+    const fullUrl = `${BASE_URL}${endpoint}?api_key=${API_KEY}&language=en-US`;
+    
+    console.log(`Fetching ${isTV ? 'TV show' : 'movie'} credits from: ${fullUrl}`);
+
+    // Check cache first
+    const cachedData = getCachedData(cacheKey);
+    if (cachedData) {
+        console.log('Returning cached credits data');
+        return cachedData;
+    }
+
+    try {
+        const response = await fetch(fullUrl);
+
+        if (!response.ok) {
+            throw new Error(`API error: ${response.status} - ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        console.log(`${isTV ? 'TV show' : 'Movie'} credits API response for ${isTV ? 'TV' : 'movie'} ${id}:`, data);
+
+        // Cache the response
+        setCachedData(cacheKey, data);
+        return data;
+    } catch (error) {
+        console.error(`Error fetching ${isTV ? 'TV show' : 'movie'} credits for ID ${id}:`, error);
+        throw error;
+    }
+};
+
+// Fetch person details
+export const fetchPersonDetails = async (personId) => {
+    const endpoint = `/person/${personId}`;
+    const cacheKey = getCacheKey(endpoint);
+    const fullUrl = `${BASE_URL}${endpoint}?api_key=${API_KEY}&language=en-US`;
+
+    const cachedData = getCachedData(cacheKey);
+    if (cachedData) {
+        return cachedData;
+    }
+
+    try {
+        const response = await fetch(fullUrl);
+        if (!response.ok) {
+            throw new Error(`API error: ${response.status}`);
+        }
+        const data = await response.json();
+        setCachedData(cacheKey, data);
+        return data;
+    } catch (error) {
+        console.error(`Error fetching person details for ID ${personId}:`, error);
+        throw error;
+    }
+};
+
+// Fetch person credits (movies and TV shows they've worked on)
+export const fetchPersonCredits = async (personId) => {
+    const endpoint = `/person/${personId}/combined_credits`;
+    const cacheKey = getCacheKey(endpoint);
+    const fullUrl = `${BASE_URL}${endpoint}?api_key=${API_KEY}&language=en-US`;
+
+    const cachedData = getCachedData(cacheKey);
+    if (cachedData) {
+        return cachedData;
+    }
+
+    try {
+        const response = await fetch(fullUrl);
+        if (!response.ok) {
+            throw new Error(`API error: ${response.status}`);
+        }
+        const data = await response.json();
+        setCachedData(cacheKey, data);
+        return data;
+    } catch (error) {
+        console.error(`Error fetching person credits for ID ${personId}:`, error);
+        throw error;
+    }
+};
+
+// Fetch collection details
+export const fetchCollectionDetails = async (collectionId) => {
+    const endpoint = `/collection/${collectionId}`;
+    const cacheKey = getCacheKey(endpoint);
+    const fullUrl = `${BASE_URL}${endpoint}?api_key=${API_KEY}&language=en-US`;
+
+    const cachedData = getCachedData(cacheKey);
+    if (cachedData) {
+        return cachedData;
+    }
+
+    try {
+        const response = await fetch(fullUrl);
+        if (!response.ok) {
+            throw new Error(`API error: ${response.status}`);
+        }
+        const data = await response.json();
+        setCachedData(cacheKey, data);
+        return data;
+    } catch (error) {
+        console.error(`Error fetching collection details for ID ${collectionId}:`, error);
+        throw error;
+    }
+};

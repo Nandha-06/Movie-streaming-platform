@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import React, { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import "./Browse.css";
 import { useLocation } from "react-router-dom";
 import { FiltersBar } from "../../components/header/FiltersBar";
@@ -56,6 +56,7 @@ const Browse = () => {
   const [page, setPage] = useState(1);
   const [genres, setGenres] = useState([]);
   const [hasMore, setHasMore] = useState(true);
+  const loadingMoreRef = useRef(false);
 
   const genreMap = useMemo(() => {
     return genres.reduce((acc, genre) => {
@@ -100,12 +101,16 @@ const Browse = () => {
   }, [genreMap, isTVPage]);
 
   const loadMedia = useCallback(async (reset = true, currentPage) => {
+    // Prevent multiple simultaneous requests
+    if (loadingMoreRef.current) return;
+
     try {
       if (reset) {
         setLoading(true);
         setPage(1);
       } else {
         setLoadingMore(true);
+        loadingMoreRef.current = true;
       }
       setError(null);
       let data;
@@ -143,6 +148,7 @@ const Browse = () => {
     } finally {
       setLoading(false);
       setLoadingMore(false);
+      loadingMoreRef.current = false;
     }
   }, [filters, buildParams, isTrendingPage, isTVPage]);
 
@@ -181,6 +187,25 @@ const Browse = () => {
   useEffect(() => {
     loadMedia(true, 1);
   }, [filters, loadMedia]);
+
+  // Handle infinite scrolling
+  const handleScroll = useCallback(() => {
+    if (loadingMoreRef.current || !hasMore || loading) return;
+
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+
+    // Load more when user scrolls within 200px of the bottom
+    if (scrollTop + windowHeight >= documentHeight - 200) {
+      loadMedia(false, page);
+    }
+  }, [hasMore, loading, page, loadMedia]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [handleScroll]);
 
   const mediaCards = useMemo(() => {
     return media.map(item => (
@@ -223,13 +248,6 @@ const Browse = () => {
             </>
           )}
         </div>
-        {!loading && hasMore && (
-          <div className="load-more-container">
-            <button className="load-more-btn" onClick={() => loadMedia(false, page)}>
-              Load More
-            </button>
-          </div>
-        )}
       </div>
     </div>
   );

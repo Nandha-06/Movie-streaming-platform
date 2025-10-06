@@ -2,6 +2,7 @@ import React, { memo } from "react"
 import "./Header.css"
 import { Link } from "react-router-dom"
 import SearchBar from "../searchBar/searchBar"
+import Logo from "../Logo"
 
 const Header = memo(() => {
     return (
@@ -9,16 +10,21 @@ const Header = memo(() => {
             <div className="headerLeft">
                 <Link to="/" aria-label="Home" className="logo-link">
                     <div className="logo">
-                        <span className="logo-screen">Screeni</span>
-                        <span className="logo-fy">Fy</span>
+                        <Logo width={140} height={50} />
                     </div>
                 </Link>
                 <nav className="nav-links">
+                    <Link to="/" className="nav-link" aria-label="Home">
+                        Home
+                    </Link>
                     <Link to="/movies" className="nav-link" aria-label="Movies">
                         Movies
                     </Link>
                     <Link to="/tv-shows" className="nav-link" aria-label="TV Shows">
                         TV Shows
+                    </Link>
+                    <Link to="/collections" className="nav-link" aria-label="Collections">
+                        Collections
                     </Link>
                 </nav>
             </div>

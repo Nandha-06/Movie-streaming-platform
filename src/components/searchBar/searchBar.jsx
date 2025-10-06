@@ -42,6 +42,7 @@ const SearchBar = memo(() => {
         setIsExpanded(!isExpanded);
         if (isExpanded) {
             setQuery("");
+            setSuggestions([]);
             if (autoCloseTimerRef.current) {
                 clearTimeout(autoCloseTimerRef.current);
             }

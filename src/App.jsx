@@ -10,6 +10,9 @@ const Movie = lazy(() => import('./pages/movieDetail/movie'));
 const SearchResults = lazy(() => import('./pages/searchResults/searchResults'));
 const MovieCategory = lazy(() => import('./components/movieList/movieList'));
 const Browse = lazy(() => import('./pages/browse/Browse'));
+const Person = lazy(() => import('./pages/personDetail/person'));
+const Collection = lazy(() => import('./pages/collectionDetail/collection'));
+const Collections = lazy(() => import('./pages/collections/Collections'));
 
 // Loading component for Suspense fallback
 const PageLoader = () => (
@@ -22,7 +25,12 @@ const App = memo(() => {
   return (
     <ErrorBoundary>
       <div className="App">
-          <Router>
+          <Router
+            future={{
+              v7_startTransition: true,
+              v7_relativeSplatPath: true
+            }}
+          >
             <Header />
               <Suspense fallback={<PageLoader />}>
                   <Routes>
@@ -34,6 +42,9 @@ const App = memo(() => {
                       <Route path="trending" element={<Browse />} />
                       <Route path="tv-shows" element={<Browse />} />
                       <Route path="tv/:id" element={<Movie />} />
+                      <Route path="person/:id" element={<Person />} />
+                      <Route path="collections" element={<Collections />} />
+                      <Route path="collection/:id" element={<Collection />} />
                       <Route path="/*" element={<div className="error-page"><h1>Page Not Found</h1><p>The page you're looking for doesn't exist.</p></div>} />
                   </Routes>
               </Suspense>
