@@ -1,0 +1,79 @@
+.movie-card {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.2s;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.movie-card:hover {
+  transform: translateY(-4px);
+}
+
+.movie-card-link {
+  text-decoration: none;
+  display: block;
+}
+
+.movie-card-poster {
+  width: 100%;
+  aspect-ratio: 2/3;
+  object-fit: cover;
+  display: block;
+}
+
+.movie-card-info {
+  padding: 0.75rem;
+}
+
+.movie-card-info h4 {
+  color: #fff;
+  margin: 0 0 0.25rem 0;
+  font-size: 0.9rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.movie-card-info p {
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.movie-card-loading {
+  aspect-ratio: 2/3;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.9rem;
+}
+
+.movie-card-remove {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(239, 68, 68, 0.9);
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.movie-card:hover .movie-card-remove {
+  opacity: 1;
+}
+
+.movie-card-remove:hover {
+  background: rgba(239, 68, 68, 1);
+}

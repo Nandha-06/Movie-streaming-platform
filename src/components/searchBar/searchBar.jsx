@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { searchMulti, formatRating } from "../../utils/api";
 import "./searchBar.css";
 
-const SearchBar = memo(() => {
+const SearchBar = memo(({ forceExpanded = false, transparent = false, hideToggle = false, onClose }) => {
     const [query, setQuery] = useState("");
-    const [isExpanded, setIsExpanded] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(forceExpanded);
     const [suggestions, setSuggestions] = useState([]);
     const navigate = useNavigate();
     const autoCloseTimerRef = useRef(null);
@@ -19,6 +19,14 @@ const SearchBar = memo(() => {
             setSuggestions([]);
             setIsExpanded(false);
         }
+    };
+
+    const handleSuggestionClick = (item) => {
+        const isTV = item.media_type === 'tv';
+        navigate(`${isTV ? '/tv' : '/movie'}/${item.id}`);
+        setQuery('');
+        setSuggestions([]);
+        setIsExpanded(false);
     };
 
     const handleInputChange = (e) => {
@@ -39,12 +47,16 @@ const SearchBar = memo(() => {
     };
 
     const toggleSearch = () => {
-        setIsExpanded(!isExpanded);
-        if (isExpanded) {
-            setQuery("");
-            setSuggestions([]);
-            if (autoCloseTimerRef.current) {
-                clearTimeout(autoCloseTimerRef.current);
+        if (onClose) {
+            onClose();
+        } else {
+            setIsExpanded(!isExpanded);
+            if (isExpanded) {
+                setQuery("");
+                setSuggestions([]);
+                if (autoCloseTimerRef.current) {
+                    clearTimeout(autoCloseTimerRef.current);
+                }
             }
         }
     };
@@ -92,17 +104,19 @@ const SearchBar = memo(() => {
                     value={query}
                     onChange={handleInputChange}
                     placeholder="Search movies and TV shows..."
-                    className={`search-input ${isExpanded ? 'expanded' : ''}`}
+                    className={`search-input ${isExpanded ? 'expanded' : ''} ${transparent ? 'transparent' : ''}`}
                     aria-label="Search movies and TV shows"
                 />
-                <button
-                    type="button"
-                    className="search-toggle"
-                    onClick={toggleSearch}
-                    aria-label="Toggle search"
-                >
-                    <i className={`fas ${isExpanded ? 'fa-times' : 'fa-search'}`} />
-                </button>
+                {!hideToggle && (
+                    <button
+                        type="button"
+                        className="search-toggle"
+                        onClick={toggleSearch}
+                        aria-label="Toggle search"
+                    >
+                        <i className={`fas ${isExpanded ? 'fa-times' : 'fa-search'}`} />
+                    </button>
+                )}
             </form>
             {suggestions.length > 0 && (
                 <div className="suggestions-dropdown">
@@ -113,19 +127,15 @@ const SearchBar = memo(() => {
                             <div
                                 key={item.id}
                                 className="suggestion-item"
-                                onClick={() => {
-                                    navigate(`${isTV ? '/tv' : '/movie'}/${item.id}`);
-                                    setQuery('');
-                                    setSuggestions([]);
-                                    setIsExpanded(false);
-                                }}
+                                onClick={() => handleSuggestionClick(item)}
                             >
-                                <img
-                                    src={`https://image.tmdb.org/t/p/w92${item.poster_path || ''}`}
-                                    alt={title}
-                                    className="suggestion-poster"
-                                    onError={(e) => (e.target.src = 'https://via.placeholder.com/50x75?text=No+Image')}
-                                />
+                                {item.poster_path && (
+                                    <img
+                                        src={`https://image.tmdb.org/t/p/w92${item.poster_path}`}
+                                        alt={title}
+                                        className="suggestion-poster"
+                                    />
+                                )}
                                 <div className="suggestion-info">
                                     <div className="suggestion-title">{title}</div>
                                     <div className="suggestion-details">

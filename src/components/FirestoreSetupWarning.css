@@ -1,0 +1,137 @@
+.firestore-warning {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  max-width: 500px;
+  z-index: 9999;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.firestore-warning-content {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  display: flex;
+  gap: 1rem;
+  position: relative;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.firestore-warning-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.firestore-warning-text {
+  flex: 1;
+  color: white;
+}
+
+.firestore-warning-text h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  color: white;
+}
+
+.firestore-warning-text p {
+  margin: 0 0 0.75rem 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.firestore-warning-text ol {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+  font-size: 0.85rem;
+}
+
+.firestore-warning-text li {
+  margin: 0.25rem 0;
+}
+
+.firestore-warning-text a {
+  color: white;
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.firestore-warning-text a:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.firestore-warning-note {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.5rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  margin-top: 0.75rem !important;
+}
+
+.firestore-warning-note code {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-family: monospace;
+}
+
+.firestore-warning-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.5rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.firestore-warning-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+  .firestore-warning {
+    bottom: 10px;
+    right: 10px;
+    left: 10px;
+    max-width: none;
+  }
+
+  .firestore-warning-content {
+    padding: 1rem;
+  }
+
+  .firestore-warning-icon {
+    font-size: 1.5rem;
+  }
+
+  .firestore-warning-text h3 {
+    font-size: 1rem;
+  }
+
+  .firestore-warning-text p,
+  .firestore-warning-text ol {
+    font-size: 0.8rem;
+  }
+}

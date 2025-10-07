@@ -1,7 +1,7 @@
 .browse-page {
     background-color: #0f0f0f;
     min-height: 100vh;
-    padding: 2rem;
+    padding: 6rem 2rem 2rem 2rem;
     color: white;
     margin: 0;
     display: flex;
@@ -284,7 +284,6 @@
     max-width: 1400px;
     margin-left: auto;
     margin-right: auto;
-    padding-right: 1rem;
 }
 
 .browse-title {
@@ -298,9 +297,13 @@
 /* Cards Grid */
 .list__cards {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fit, 220px);
+    gap: 1.5rem;
+    justify-content: center;
+    padding: 1rem 0;
     width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
 /* Error State */
@@ -328,4 +331,88 @@
 
 .error-state button:hover {
     background-color: #45b7aa;
+}
+
+/* Responsive design for filters */
+@media (max-width: 900px) {
+    .filters-bar {
+        justify-content: center;
+    }
+
+    .filters-horizontal {
+        justify-content: center;
+        gap: 0.25rem;
+    }
+
+    .filter-button {
+        padding: 0.5rem 0.5rem;
+        font-size: 0.8rem;
+    }
+
+    .filter-text {
+        font-size: 0.8rem;
+    }
+
+    .filter-badge {
+        font-size: 0.7rem;
+        padding: 0.1rem 0.25rem;
+    }
+
+    .hamburger-icon {
+        width: 12px;
+        height: 10px;
+    }
+
+    .hamburger-line {
+        height: 1.5px;
+    }
+
+    .line-1 {
+        width: 12px;
+    }
+
+    .line-2 {
+        width: 6px;
+    }
+
+    .line-3 {
+        width: 3px;
+    }
+
+    .clear-all-btn {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.6rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .filters-horizontal {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .filter-button {
+        flex: none;
+        min-width: 80px;
+        justify-content: space-between;
+    }
+
+    .filter-separator {
+        display: none;
+    }
+
+    .clear-all-btn {
+        flex-basis: 100%;
+        margin-top: 0.5rem;
+        text-align: center;
+    }
+}
+
+/* Responsive design for cards grid */
+@media (max-width: 768px) {
+    .list__cards {
+        grid-template-columns: repeat(auto-fit, 150px);
+        gap: 1rem;
+        padding: 0.5rem 0;
+    }
 }

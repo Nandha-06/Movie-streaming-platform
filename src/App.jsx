@@ -1,8 +1,10 @@
-import React, { memo, Suspense, lazy } from 'react';
+import { memo, Suspense, lazy } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import Header from './components/header/Header';
 import ErrorBoundary from './components/ErrorBoundary';
+import { AuthProvider } from './context/AuthContext';
+import FirestoreSetupWarning from './components/FirestoreSetupWarning';
 
 // Lazy load components for better performance
 const Home = lazy(() => import('./pages/home/home'));
@@ -13,6 +15,9 @@ const Browse = lazy(() => import('./pages/browse/Browse'));
 const Person = lazy(() => import('./pages/personDetail/person'));
 const Collection = lazy(() => import('./pages/collectionDetail/collection'));
 const Collections = lazy(() => import('./pages/collections/Collections'));
+const SignIn = lazy(() => import('./pages/auth/SignIn'));
+const SignUp = lazy(() => import('./pages/auth/SignUp'));
+const Profile = lazy(() => import('./pages/profile/Profile'));
 
 // Loading component for Suspense fallback
 const PageLoader = () => (
@@ -31,7 +36,9 @@ const App = memo(() => {
               v7_relativeSplatPath: true
             }}
           >
-            <Header />
+            <AuthProvider>
+              <Header />
+              <FirestoreSetupWarning />
               <Suspense fallback={<PageLoader />}>
                   <Routes>
                       <Route index element={<Home />} />
@@ -45,9 +52,13 @@ const App = memo(() => {
                       <Route path="person/:id" element={<Person />} />
                       <Route path="collections" element={<Collections />} />
                       <Route path="collection/:id" element={<Collection />} />
+                      <Route path="signin" element={<SignIn />} />
+                      <Route path="signup" element={<SignUp />} />
+                      <Route path="profile" element={<Profile />} />
                       <Route path="/*" element={<div className="error-page"><h1>Page Not Found</h1><p>The page you're looking for doesn't exist.</p></div>} />
                   </Routes>
               </Suspense>
+            </AuthProvider>
           </Router>
       </div>
     </ErrorBoundary>

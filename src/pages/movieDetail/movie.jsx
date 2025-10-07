@@ -1,11 +1,15 @@
-import React, { useEffect, useState, useCallback } from "react"
+import { useEffect, useState, useCallback } from "react"
 import "./movie.css"
-import { useParams, useLocation, Link } from "react-router-dom"
-import { fetchMovieDetails, fetchTVDetails, formatRating, fetchMovieLogos, fetchSimilarMedia, fetchCredits, fetchCollectionDetails } from "../../utils/api"
+import { useParams, useLocation, Link, useNavigate } from "react-router-dom"
+import { fetchMovieDetails, fetchTVDetails, formatRating, fetchMovieLogos, fetchSimilarMedia, fetchCredits, fetchCollectionDetails, fetchMovieTrailers } from "../../utils/api"
+import { useAuth } from "../../context/AuthContext"
+import { addToLiked, removeFromLiked, addToWatchLater, removeFromWatchLater, getUserData } from "../../utils/userActions"
 
 const Movie = () => {
     const location = useLocation()
+    const navigate = useNavigate()
     const isTV = location.pathname.includes('/tv/')
+    const { user } = useAuth()
 
     const [currentMovieDetail, setMovie] = useState(null)
     const [movieLogo, setMovieLogo] = useState(null)
@@ -14,6 +18,12 @@ const Movie = () => {
     const [collection, setCollection] = useState(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
+    const [isLiked, setIsLiked] = useState(false)
+    const [isInWatchlist, setIsInWatchlist] = useState(false)
+    const [showTrailerModal, setShowTrailerModal] = useState(false)
+    const [trailerData, setTrailerData] = useState(null)
+    const [trailerLoading, setTrailerLoading] = useState(false)
+    const [showAuthPrompt, setShowAuthPrompt] = useState(false)
     const { id } = useParams()
 
     const loadMovieDetails = useCallback(async () => {
@@ -90,6 +100,28 @@ const Movie = () => {
         }
     }, [currentMovieDetail, isTV])
 
+    // Check if movie is liked or in watchlist
+    useEffect(() => {
+        const checkUserActions = async () => {
+            if (user) {
+                try {
+                    const userData = await getUserData(user.uid)
+                    if (userData) {
+                        setIsLiked(userData.likedMovies?.includes(id) || false)
+                        setIsInWatchlist(userData.watchLater?.includes(id) || false)
+                    }
+                } catch (error) {
+                    console.error('Error checking user actions:', error)
+                }
+            } else {
+                setIsLiked(false)
+                setIsInWatchlist(false)
+            }
+        }
+
+        checkUserActions()
+    }, [user, id])
+
     // Reset states when movie ID changes
     useEffect(() => {
         setMovie(null)
@@ -117,6 +149,96 @@ const Movie = () => {
             setCollection(null)
         }
     }, [currentMovieDetail, loadMovieLogo, loadCollection, isTV])
+
+    const handleLike = async () => {
+        if (!user) {
+            setShowAuthPrompt(true)
+            return
+        }
+
+        try {
+            if (isLiked) {
+                await removeFromLiked(user.uid, id)
+                setIsLiked(false)
+            } else {
+                await addToLiked(user.uid, id)
+                setIsLiked(true)
+            }
+        } catch (error) {
+            console.error('Error updating like:', error)
+        }
+    }
+
+    const handleShare = async () => {
+        const url = window.location.href
+        const title = (currentMovieDetail.title || currentMovieDetail.name) || 'Check this out!'
+
+        try {
+            if (navigator.share) {
+                // Use Web Share API if available
+                await navigator.share({
+                    title: title,
+                    text: `Check out this ${isTV ? 'TV show' : 'movie'}: ${title}`,
+                    url: url
+                })
+            } else {
+                // Fallback to clipboard
+                await navigator.clipboard.writeText(url)
+                // Could show a toast notification here
+                console.log('URL copied to clipboard!')
+            }
+        } catch (error) {
+            console.error('Error sharing:', error)
+        }
+    }
+
+    const handleWatchlist = async () => {
+        if (!user) {
+            setShowAuthPrompt(true)
+            return
+        }
+
+        try {
+            if (isInWatchlist) {
+                await removeFromWatchLater(user.uid, id)
+                setIsInWatchlist(false)
+            } else {
+                await addToWatchLater(user.uid, id)
+                setIsInWatchlist(true)
+            }
+        } catch (error) {
+            console.error('Error updating watchlist:', error)
+        }
+    }
+
+    const handleTrailerClick = async () => {
+        setShowTrailerModal(true)
+        setTrailerLoading(true)
+        setTrailerData(null)
+
+        try {
+            const trailers = await fetchMovieTrailers(id, isTV)
+            if (trailers && trailers.length > 0) {
+                // Sort by official and use the first one
+                const sortedTrailers = trailers.sort((a, b) => {
+                    if (a.official && !b.official) return -1
+                    if (!a.official && b.official) return 1
+                    return 0
+                })
+                setTrailerData(sortedTrailers[0])
+            }
+        } catch (error) {
+            console.error('Error loading trailer:', error)
+        } finally {
+            setTrailerLoading(false)
+        }
+    }
+
+    const closeTrailerModal = () => {
+        setShowTrailerModal(false)
+        setTrailerData(null)
+        setTrailerLoading(false)
+    }
 
     if (error) {
         return (
@@ -160,13 +282,16 @@ const Movie = () => {
 
                     {/* Action Buttons */}
                     <div className="movie-actions">
-                        <button className="action-btn">
+                        <button className={`action-btn ${isLiked ? 'liked' : ''}`} onClick={handleLike} title="Like">
                             <i className="fas fa-heart"></i>
                         </button>
-                        <button className="action-btn">
+                        <button className={`action-btn ${isInWatchlist ? 'watchlist-added' : ''}`} onClick={handleWatchlist} title="Watch Later">
+                            <span className="watch-plus">+</span>
+                        </button>
+                        <button className="action-btn" onClick={handleShare} title="Share">
                             <i className="fas fa-share-alt"></i>
                         </button>
-                        <button className="action-btn trailer-btn">
+                        <button className="action-btn trailer-btn" title="Trailer" onClick={handleTrailerClick}>
                             <i className="fab fa-youtube"></i> Trailer
                         </button>
                     </div>
@@ -392,6 +517,57 @@ const Movie = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Trailer Modal */}
+            {showTrailerModal && (
+                <div className="trailer-modal-overlay" onClick={closeTrailerModal}>
+                    <div className="trailer-modal" onClick={(e) => e.stopPropagation()}>
+                        <button className="trailer-modal-close" onClick={closeTrailerModal}>
+                            <i className="fas fa-times"></i>
+                        </button>
+                        <div className="trailer-modal-content">
+                            {trailerLoading ? (
+                                <div className="trailer-loading">
+                                    <div className="loading-spinner">Loading trailer...</div>
+                                </div>
+                            ) : trailerData ? (
+                                <iframe
+                                    src={`https://www.youtube.com/embed/${trailerData.key}?autoplay=1&rel=0&modestbranding=1`}
+                                    title={`${currentMovieDetail.title || currentMovieDetail.name} Trailer`}
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                    className="trailer-iframe"
+                                ></iframe>
+                            ) : (
+                                <div className="trailer-error">
+                                    <p>No trailer available</p>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Auth Prompt Modal */}
+            {showAuthPrompt && (
+                <div className="auth-prompt-overlay" onClick={() => setShowAuthPrompt(false)}>
+                    <div className="auth-prompt" onClick={(e) => e.stopPropagation()}>
+                        <button className="auth-prompt-close" onClick={() => setShowAuthPrompt(false)}>
+                            <i className="fas fa-times"></i>
+                        </button>
+                        <h2>Sign in required</h2>
+                        <p>Please sign in to like movies and add them to your watchlist</p>
+                        <div className="auth-prompt-buttons">
+                            <button onClick={() => navigate('/signin')} className="auth-prompt-signin">
+                                Sign In
+                            </button>
+                            <button onClick={() => navigate('/signup')} className="auth-prompt-signup">
+                                Sign Up
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }

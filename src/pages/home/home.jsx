@@ -5,17 +5,25 @@ import { Carousel } from 'react-responsive-carousel';
 import { Link } from "react-router-dom";
 import Cards from "../../components/card/card";
 import { fetchMovies, fetchTVShows, fetchDiscoverMovies, fetchDiscoverTV, formatRating, filterDramaMovies } from "../../utils/api";
+import { useAuth } from "../../context/AuthContext";
+import { getUserData } from "../../utils/userActions";
 
 const Home = () => {
-    // Movies state
-    const [trendingMovies, setTrendingMovies] = useState([])
-    const [popularMovies, setPopularMovies] = useState([])
-    const [topRatedMovies, setTopRatedMovies] = useState([])
-    const [actionThrillers, setActionThrillers] = useState([])
-    const [comedyMovies, setComedyMovies] = useState([])
-    const [dramaMovies, setDramaMovies] = useState([])
-    const [horrorMovies, setHorrorMovies] = useState([])
-    const [scifiMovies, setScifiMovies] = useState([])
+     const { user } = useAuth();
+
+     // Continue Watching state
+     const [continueWatching, setContinueWatching] = useState([])
+     const [continueWatchingLoading, setContinueWatchingLoading] = useState(false)
+
+     // Movies state
+     const [trendingMovies, setTrendingMovies] = useState([])
+     const [popularMovies, setPopularMovies] = useState([])
+     const [topRatedMovies, setTopRatedMovies] = useState([])
+     const [actionThrillers, setActionThrillers] = useState([])
+     const [comedyMovies, setComedyMovies] = useState([])
+     const [dramaMovies, setDramaMovies] = useState([])
+     const [horrorMovies, setHorrorMovies] = useState([])
+     const [scifiMovies, setScifiMovies] = useState([])
 
     // TV Shows state
     const [trendingTV, setTrendingTV] = useState([])
@@ -33,6 +41,7 @@ const Home = () => {
     const autoPlayTimeoutRef = useRef() // Ref to store resume timeout ID
 
     // Create refs for all scroll sections
+    const continueWatchingRef = useRef()
     const trendingMoviesRef = useRef()
     const popularMoviesRef = useRef()
     const topRatedMoviesRef = useRef()
@@ -129,6 +138,53 @@ const Home = () => {
 
         loadMoviesAndTVShows()
     }, [])
+
+    // Load Continue Watching movies for authenticated users
+    useEffect(() => {
+        const loadContinueWatching = async () => {
+            if (!user) {
+                setContinueWatching([])
+                return
+            }
+
+            try {
+                setContinueWatchingLoading(true)
+                const userData = await getUserData(user.uid)
+
+                if (userData && userData.watchedMovies && userData.watchedMovies.length > 0) {
+                    // Get recently watched movies (last 12)
+                    const watchedMovieIds = userData.watchedMovies.slice(-12)
+
+                    // Fetch movie details for watched movies
+                    const continueWatchingPromises = watchedMovieIds.map(async (movieId) => {
+                        try {
+                            const response = await fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=4e44d9029b1270a757cddc766a1bcb63&language=en-US`)
+                            const movieData = await response.json()
+                            return movieData
+                        } catch (error) {
+                            console.error(`Error fetching movie ${movieId}:`, error)
+                            return null
+                        }
+                    })
+
+                    const continueWatchingMovies = (await Promise.all(continueWatchingPromises))
+                        .filter(movie => movie !== null)
+                        .reverse() // Most recent first
+
+                    setContinueWatching(continueWatchingMovies)
+                } else {
+                    setContinueWatching([])
+                }
+            } catch (error) {
+                console.error('Error loading continue watching:', error)
+                setContinueWatching([])
+            } finally {
+                setContinueWatchingLoading(false)
+            }
+        }
+
+        loadContinueWatching()
+    }, [user])
 
     const createSectionScrollComponent = (title, items, linkPath, ref) => (
         items.length > 0 && (
@@ -266,6 +322,7 @@ const Home = () => {
                         pauseAutoPlay()
                         autoPlayTimeoutRef.current = setTimeout(() => startAutoPlay(), 5000)
                     }}
+                    aria-label="Previous movie"
                 >
                     ‹
                 </button>
@@ -283,6 +340,7 @@ const Home = () => {
                         pauseAutoPlay()
                         autoPlayTimeoutRef.current = setTimeout(() => startAutoPlay(), 5000)
                     }}
+                    aria-label="Next movie"
                 >
                     ›
                 </button>
@@ -291,6 +349,38 @@ const Home = () => {
             {/* Movies Section */}
             {!loading && !error && (
                 <>
+                    {/* Continue Watching - Only show for authenticated users with watched movies */}
+                    {user && continueWatching.length > 0 && (
+                        <div className="now-playing-section">
+                            <div className="section-header">
+                                <Link to="/profile" style={{textDecoration: "none", color: "inherit"}}>
+                                    <h2>Continue Watching <span style={{fontSize: "0.8em", cursor: "pointer"}}>›</span></h2>
+                                </Link>
+                            </div>
+                            <div className="horizontal-scroll-container">
+                                <button className="scroll-btn scroll-btn-left" onClick={() => {
+                                    if (continueWatchingRef.current) {
+                                        continueWatchingRef.current.scrollBy({ left: -300, behavior: 'smooth' });
+                                    }
+                                }}>
+                                    <i className="fas fa-chevron-left"></i>
+                                </button>
+                                <div className="horizontal-scroll-content" ref={continueWatchingRef}>
+                                    {continueWatching.slice(0, 12).map(movie => (
+                                        <Cards key={movie.id} movie={movie} />
+                                    ))}
+                                </div>
+                                <button className="scroll-btn scroll-btn-right" onClick={() => {
+                                    if (continueWatchingRef.current) {
+                                        continueWatchingRef.current.scrollBy({ left: 300, behavior: 'smooth' });
+                                    }
+                                }}>
+                                    <i className="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
                     {/* Trending Now */}
                     {createSectionScrollComponent("Trending Now", trendingMovies, "/trending", trendingMoviesRef)}
 
