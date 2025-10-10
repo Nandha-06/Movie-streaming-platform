@@ -1,5 +1,5 @@
 // API utility functions with caching for better performance
-const API_KEY = '4e44d9029b1270a757cddc766a1bcb63';
+const API_KEY = '';
 const BASE_URL = 'https://api.themoviedb.org/3';
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 

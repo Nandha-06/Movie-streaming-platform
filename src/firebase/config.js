@@ -4,13 +4,13 @@ import { getFirestore } from "firebase/firestore";
 import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyD-pmX8or5bedm_7p0-1dlIi0fOQ4j_Qv8",
-  authDomain: "binge-monkey.firebaseapp.com",
-  projectId: "binge-monkey",
-  storageBucket: "binge-monkey.firebasestorage.app",
-  messagingSenderId: "1046401911615",
-  appId: "1:1046401911615:web:2d29de118b15941dcca18a",
-  measurementId: "G-JE2XFDJNDK"
+  apiKey: "",
+  authDomain: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: "",
+  measurementId: ""
 };
 
 const app = initializeApp(firebaseConfig);
