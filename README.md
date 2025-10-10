@@ -52,7 +52,7 @@ src/
 
 ### Prerequisites
 
-- Node.js (v14 or更高)
+- Node.js (v18 or later)
 - npm or yarn
 - TMDB API Key (get one at [TMDB](https://www.themoviedb.org/settings/api))
 
