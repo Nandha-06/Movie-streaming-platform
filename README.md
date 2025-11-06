@@ -142,4 +142,3 @@ This app uses The Movie Database (TMDB) API. Make sure to:
 - Respect TMDB's API usage policies
 - Attribute TMDB appropriately in your app
 
-Built with ❤️ using React, Vite, and TMDB API
